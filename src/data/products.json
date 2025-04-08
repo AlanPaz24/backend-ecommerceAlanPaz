@@ -1,0 +1,41 @@
+[
+  {
+    "title": "Yamaha XTZ 250",
+    "description": "Moto tipo enduro con excelente rendimiento en ruta y off-road.",
+    "code": "YAMAHA-XTZ250",
+    "price": 1950000,
+    "status": true,
+    "stock": 8,
+    "category": "Enduro",
+    "thumbnails": [
+      "https://ruta-a-la-foto.com/xtz.jpg"
+    ],
+    "id": "22ac99f7-92db-433c-b119-edc886289c9e"
+  },
+  {
+    "title": "Honda CB250 Twister",
+    "description": "Moto naked ideal para ciudad y viajes cortos. Buena autonomía y rendimiento.",
+    "code": "HONDA-CB250",
+    "price": 1800000,
+    "status": true,
+    "stock": 12,
+    "category": "Naked",
+    "thumbnails": [
+      "https://motos.honda.com.ar/images/cb250twister.jpg"
+    ],
+    "id": "0296e758-b89f-4b7b-a2d3-b56fefc1a074"
+  },
+  {
+    "title": "Honda XR190L",
+    "description": "Enduro ligera, ideal para caminos de tierra y uso urbano.",
+    "code": "HONDA-XR190L",
+    "price": 1450000,
+    "status": true,
+    "stock": 10,
+    "category": "Enduro",
+    "thumbnails": [
+      "https://motos.honda.com.ar/images/xr190l.jpg"
+    ],
+    "id": "33ce696d-9ccc-4afc-8990-4d78dd87218a"
+  }
+]
