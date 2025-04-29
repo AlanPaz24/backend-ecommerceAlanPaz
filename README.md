@@ -12,7 +12,3 @@ Proyecto desarrollado en Node.js y Express para la segunda preentrega del curso 
 - Socket.io
 - JSON para persistencia de datos
 
----
-
-## 📁 Estructura del proyecto
-
