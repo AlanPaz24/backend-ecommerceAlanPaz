@@ -7,6 +7,9 @@ import cartsRouter from './routes/carts.routes.js';
 import viewsRouter from './views.router.js';
 import { Server } from 'socket.io';
 import ProductManager from './managers/ProductManager.js';
+import { connectDB } from './config/db.js';
+connectDB();
+
 
 const app = express();
 const PORT = 8080;

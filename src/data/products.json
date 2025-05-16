@@ -37,5 +37,17 @@
       "https://motos.honda.com.ar/images/xr190l.jpg"
     ],
     "id": "33ce696d-9ccc-4afc-8990-4d78dd87218a"
+  },
+  {
+    "title": "Honda XR150L",
+    "description": "Enduro urbana de 150cc",
+    "code": "XR150L",
+    "price": 2850000,
+    "stock": 12,
+    "category": "enduro",
+    "thumbnails": [
+      "xr150.jpg"
+    ],
+    "id": "fc45bbea-c59b-4a4d-8c5f-eaedd8c2d295"
   }
 ]
