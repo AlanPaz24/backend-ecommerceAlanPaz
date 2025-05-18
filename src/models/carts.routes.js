@@ -4,13 +4,13 @@ import CartManager from '../managers/CartManagerMongo.js';
 const router = Router();
 const cartManager = new CartManager();
 
-// Crear un nuevo carrito
+// Crear carrito
 router.post('/', async (req, res) => {
   const newCart = await cartManager.createCart();
   res.status(201).json(newCart);
 });
 
-// Obtener carrito por ID (con productos populados)
+// Obtener carrito por ID
 router.get('/:cid', async (req, res) => {
   const cart = await cartManager.getCartById(req.params.cid);
   if (!cart) return res.status(404).json({ error: 'Carrito no encontrado' });
