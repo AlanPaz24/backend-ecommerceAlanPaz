@@ -36,4 +36,62 @@ export default class CartManagerMongo {
       console.error('❌ Error al agregar producto al carrito:', error);
     }
   }
+    // Eliminar un producto puntual del carrito
+  async removeProductFromCart(cid, pid) {
+    try {
+      const cart = await Cart.findById(cid);
+      if (!cart) return null;
+
+      cart.products = cart.products.filter(p => p.product.toString() !== pid);
+      await cart.save();
+      return cart;
+    } catch (error) {
+      console.error('❌ Error al eliminar producto del carrito:', error);
+    }
+  }
+
+  // Reemplazar todo el carrito con un array de productos
+  async updateCart(cid, newProducts) {
+    try {
+      const cart = await Cart.findById(cid);
+      if (!cart) return null;
+
+      cart.products = newProducts;
+      await cart.save();
+      return cart;
+    } catch (error) {
+      console.error('❌ Error al actualizar carrito completo:', error);
+    }
+  }
+
+  // Actualizar solo la cantidad de un producto
+  async updateProductQuantity(cid, pid, quantity) {
+    try {
+      const cart = await Cart.findById(cid);
+      if (!cart) return null;
+
+      const product = cart.products.find(p => p.product.toString() === pid);
+      if (!product) return null;
+
+      product.quantity = quantity;
+      await cart.save();
+      return cart;
+    } catch (error) {
+      console.error('❌ Error al actualizar cantidad:', error);
+    }
+  }
+
+  // Vaciar el carrito
+  async clearCart(cid) {
+    try {
+      const cart = await Cart.findById(cid);
+      if (!cart) return null;
+
+      cart.products = [];
+      await cart.save();
+      return cart;
+    } catch (error) {
+      console.error('❌ Error al vaciar carrito:', error);
+    }
+  }
 }

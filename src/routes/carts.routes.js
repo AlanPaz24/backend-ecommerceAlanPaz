@@ -23,5 +23,38 @@ router.post('/:cid/product/:pid', async (req, res) => {
   if (!result) return res.status(404).json({ error: 'Carrito o producto no encontrado' });
   res.json(result);
 });
+// 1. DELETE un producto específico del carrito
+router.delete('/:cid/products/:pid', async (req, res) => {
+  const { cid, pid } = req.params;
+  const result = await cartManager.removeProductFromCart(cid, pid);
+  if (!result) return res.status(404).json({ error: 'Carrito o producto no encontrado' });
+  res.json(result);
+});
+
+// 2. PUT reemplazar todo el carrito
+router.put('/:cid', async (req, res) => {
+  const { cid } = req.params;
+  const { products } = req.body;
+  const result = await cartManager.updateCart(cid, products);
+  if (!result) return res.status(404).json({ error: 'Carrito no encontrado' });
+  res.json(result);
+});
+
+// 3. PUT actualizar cantidad de un producto
+router.put('/:cid/products/:pid', async (req, res) => {
+  const { cid, pid } = req.params;
+  const { quantity } = req.body;
+  const result = await cartManager.updateProductQuantity(cid, pid, quantity);
+  if (!result) return res.status(404).json({ error: 'Carrito o producto no encontrado' });
+  res.json(result);
+});
+
+// 4. DELETE vaciar todo el carrito
+router.delete('/:cid', async (req, res) => {
+  const { cid } = req.params;
+  const result = await cartManager.clearCart(cid);
+  if (!result) return res.status(404).json({ error: 'Carrito no encontrado' });
+  res.json(result);
+});
 
 export default router;
