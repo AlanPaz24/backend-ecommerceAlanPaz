@@ -8,12 +8,22 @@ export default class CartManagerMongo {
       console.error('❌ Error al crear carrito:', error);
     }
   }
+  
 
   async getCartById(cid) {
     try {
       return await Cart.findById(cid).populate('products.product');
     } catch (error) {
       console.error('❌ Carrito no encontrado:', error);
+    }
+  }
+  // Este método va dentro de la clase
+  async getAllCarts() {
+    try {
+      return await Cart.find().populate('products.product');
+    } catch (error) {
+      console.error('❌ Error al obtener carritos:', error);
+      return [];
     }
   }
 

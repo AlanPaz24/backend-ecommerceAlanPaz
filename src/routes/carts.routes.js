@@ -4,6 +4,15 @@ import CartManager from '../managers/CartManagerMongo.js';
 const router = Router();
 const cartManager = new CartManager();
 
+// Obtener todos los carritos
+router.get('/', async (req, res) => {
+  try {
+    const carts = await cartManager.getAllCarts();
+    res.json(carts);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener los carritos' });
+  }
+});
 // Crear un nuevo carrito
 router.post('/', async (req, res) => {
   const newCart = await cartManager.createCart();
