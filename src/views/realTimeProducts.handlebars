@@ -9,11 +9,31 @@
   {{/each}}
 </ul>
 
-<form id="productForm">
-  <input type="text" name="title" placeholder="Título" required />
-  <input type="number" name="price" placeholder="Precio" required />
-  <button type="submit">Agregar producto</button>
+<h1>Productos en Tiempo Real</h1>
+
+<form id="product-form">
+  <input type="text" name="title" placeholder="Título" required>
+  <input type="text" name="description" placeholder="Descripción" required>
+  <input type="text" name="code" placeholder="Código" required>
+  <input type="number" name="price" placeholder="Precio" required>
+  <input type="number" name="stock" placeholder="Stock" required>
+  <input type="text" name="category" placeholder="Categoría" required>
+  <input type="text" name="thumbnails" placeholder="Imágenes (separadas por coma)">
+  <button type="submit">Agregar Producto</button>
 </form>
+
+<ul id="product-list">
+  {{#each products}}
+    <li data-id="{{this._id}}">
+      <strong>{{this.title}}</strong> - ${{this.price}}
+      <button onclick="deleteProduct('{{this._id}}')">Eliminar</button>
+    </li>
+  {{/each}}
+</ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>
+
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/realtime.js"></script>

@@ -14,10 +14,19 @@ router.get('/', async (req, res) => {
   }
 });
 // Crear un nuevo carrito
-router.post('/', async (req, res) => {
-  const newCart = await cartManager.createCart();
-  res.status(201).json(newCart);
+router.post('/:cid/product/:pid', async (req, res) => {
+  const { cid, pid } = req.params;
+
+  try {
+    const result = await cartManager.addProductToCart(cid, pid);
+    if (!result) return res.status(404).json({ error: 'Carrito o producto no encontrado.' });
+
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al agregar producto al carrito.' });
+  }
 });
+
 
 // Obtener carrito por ID (con productos populados)
 router.get('/:cid', async (req, res) => {
