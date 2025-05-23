@@ -6,7 +6,7 @@ import { Server } from 'socket.io';
 import __dirname from './utils.js';
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
-import viewsRouter from './views.router.js';
+import viewsRouter from './routes/views.routes.js';
 
 import ProductManager from './managers/ProductManager.js';
 import { connectDB } from './config/db.js';
