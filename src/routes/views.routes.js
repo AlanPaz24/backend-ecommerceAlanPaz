@@ -82,5 +82,13 @@ router.get('/products/:pid', async (req, res) => {
 });
 
 });
+router.get('/carts/:cid', async (req, res) => {
+  const { cid } = req.params;
+  const cart = await cartManager.getCartById(cid); // Esta función ya usa .populate()
+
+  if (!cart) return res.status(404).send('Carrito no encontrado');
+
+  res.render('cartDetail', { cart });
+});
 
 export default router;

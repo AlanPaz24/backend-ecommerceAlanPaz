@@ -5,7 +5,6 @@ import { engine } from 'express-handlebars';
 import Handlebars from 'handlebars';
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
 
-
 import __dirname from './utils.js';
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
@@ -32,9 +31,11 @@ app.engine(
     handlebars: allowInsecurePrototypeAccess(Handlebars)
   })
 );
-
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
+
+// ✅ Registrar helper 'multiply'
+Handlebars.registerHelper('multiply', (a, b) => a * b);
 
 // ✅ Rutas
 app.use('/api/products', productsRouter);
