@@ -1,44 +1,52 @@
 import express from 'express';
-import { engine } from 'express-handlebars';
 import path from 'path';
 import { Server } from 'socket.io';
+import { engine } from 'express-handlebars';
+import Handlebars from 'handlebars';
+import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
+
 
 import __dirname from './utils.js';
 import productsRouter from './routes/products.routes.js';
 import cartsRouter from './routes/carts.routes.js';
 import viewsRouter from './routes/views.routes.js';
-
-import ProductManager from './managers/ProductManager.js';
+import ProductManager from './managers/ProductManagerMongo.js';
 import { connectDB } from './config/db.js';
 
-// Conexión a MongoDB
+// ✅ Conectar a MongoDB
 connectDB();
 
-// Inicializar Express
+// ✅ Inicializar Express
 const app = express();
 const PORT = 8080;
 
-// Middlewares
+// ✅ Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Handlebars
-app.engine('handlebars', engine());
+// ✅ Configuración de Handlebars con acceso a prototipos
+app.engine(
+  'handlebars',
+  engine({
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
+  })
+);
+
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
 
-// Routers
+// ✅ Rutas
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 app.use('/', viewsRouter);
 
-// Servidor HTTP
+// ✅ Iniciar servidor HTTP
 const httpServer = app.listen(PORT, () => {
   console.log(`Servidor escuchando en el puerto ${PORT}`);
 });
 
-// WebSockets
+// ✅ WebSocket con Socket.io
 const io = new Server(httpServer);
 const productManager = new ProductManager();
 

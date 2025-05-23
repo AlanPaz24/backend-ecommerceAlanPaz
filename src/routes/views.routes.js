@@ -1,7 +1,8 @@
 import { Router } from 'express';
 import Product from '../models/Product.js';
 import CartManager from '../managers/CartManagerMongo.js';
-import ProductManager from '../managers/ProductManager.js';
+import ProductManager from '../managers/ProductManagerMongo.js';
+
 
 const router = Router();
 const cartManager = new CartManager();
@@ -72,11 +73,12 @@ router.get('/carts/:cid', async (req, res) => {
   } catch (err) {
     res.status(500).send('Error al cargar el carrito');
   }
+
 router.get('/products/:pid', async (req, res) => {
   const { pid } = req.params;
   const product = await productManager.getProductById(pid);
   if (!product) return res.status(404).send('Producto no encontrado');
-  res.render('productDetail', { product, cartId: 'TU_CART_ID_AQUI' }); // reemplazá el ID por uno real si querés testear
+  res.render('productDetail', { product });
 });
 
 });
