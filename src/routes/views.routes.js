@@ -7,22 +7,23 @@ const router = Router();
 const cartManager = new CartManager();
 const productManager = new ProductManager();
 
-// Home (con productos desde archivo JSON si querés usarlo)
+// 👉 Ruta Home (opcional, si querés cargar productos desde archivo)
 router.get('/', async (req, res) => {
   const products = await productManager.getProducts();
   res.render('home', { products });
 });
 
-// Vista con WebSockets
+// 👉 Vista con WebSockets (realTimeProducts)
 router.get('/realtimeproducts', async (req, res) => {
   const products = await productManager.getProducts();
   res.render('realTimeProducts', { products });
 });
 
-// Vista de productos paginada desde Mongo
+// 👉 Vista de productos paginados (desde MongoDB con filtros)
 router.get('/products', async (req, res) => {
   try {
     const { limit = 10, page = 1, sort, query } = req.query;
+    const cartId = '6833adcb8a618a7c862b9d1a'; // Reemplazá por lógica dinámica si querés
 
     const filter = query
       ? { $or: [{ category: query }, { status: query }] }
@@ -43,6 +44,7 @@ router.get('/products', async (req, res) => {
 
     res.render('products', {
       products: result.docs,
+      cartId,
       pagination: {
         page: result.page,
         totalPages: result.totalPages,
@@ -57,7 +59,7 @@ router.get('/products', async (req, res) => {
   }
 });
 
-// Vista individual de producto
+// 👉 Vista individual de un producto
 router.get('/products/:pid', async (req, res) => {
   const { pid } = req.params;
   const product = await productManager.getProductById(pid);
@@ -65,13 +67,21 @@ router.get('/products/:pid', async (req, res) => {
   res.render('productDetail', { product });
 });
 
-// Vista del carrito (con productos populados)
+// 👉 Vista del carrito con productos populados
 router.get('/carts/:cid', async (req, res) => {
-  const { cid } = req.params;
-  const cart = await cartManager.getCartById(cid);
-  if (!cart) return res.status(404).send('Carrito no encontrado');
+  try {
+    const cart = await cartManager.getCartById(req.params.cid);
+    if (!cart) return res.status(404).send('Carrito no encontrado');
 
-  res.render('cartDetail', { cart });
+    const total = cart.products.reduce(
+      (sum, item) => sum + item.product.price * item.quantity,
+      0
+    );
+
+    res.render('cartDetail', { cart, total });
+  } catch (err) {
+    res.status(500).send('Error al cargar el carrito');
+  }
 });
 
 export default router;

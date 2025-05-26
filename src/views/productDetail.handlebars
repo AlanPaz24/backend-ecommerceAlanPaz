@@ -1,18 +1,14 @@
 <h1>{{product.title}}</h1>
 
-<div>
-  <p><strong>Descripción:</strong> {{product.description}}</p>
-  <p><strong>Precio:</strong> ${{product.price}}</p>
-  <p><strong>Categoría:</strong> {{product.category}}</p>
-  <p><strong>Stock:</strong> {{product.stock}}</p>
-  <p><strong>Código:</strong> {{product.code}}</p>
-  <p><strong>Estado:</strong> {{#if product.status}}Disponible{{else}}No disponible{{/if}}</p>
+<p><strong>Precio:</strong> ${{product.price}}</p>
+<p><strong>Categoría:</strong> {{product.category}}</p>
+<p><strong>Descripción:</strong> {{product.description}}</p>
+<p><strong>Stock:</strong> {{product.stock}}</p>
 
-  {{#each product.thumbnails}}
-    <img src="/img/{{this}}" alt="imagen de {{../title}}" width="200" />
-  {{/each}}
+<!-- Formulario para agregar al carrito -->
+<form action="/api/carts/6833adcb8a618a7c862b9d1a/product/{{product._id}}" method="POST">
+  <button type="submit">Agregar al carrito</button>
+</form>
 
-  <form action="/api/carts/682a5bd760e776f42eea701a/product/{{product._id}}" method="POST">
-    <button type="submit">Agregar al carrito</button>
-  </form>
-</div>
+<br>
+<a href="/products">⬅️ Volver a productos</a>
