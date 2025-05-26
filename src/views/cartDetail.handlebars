@@ -1,16 +1,30 @@
-<h1>Detalle del carrito</h1>
+<h1>Carrito de Compras</h1>
 
 {{#if cart.products.length}}
   <ul>
     {{#each cart.products}}
       <li>
-        <strong>{{this.product.title}}</strong><br>
-        Precio: ${{this.product.price}}<br>
-        Cantidad: {{this.quantity}}<br>
-        Subtotal: ${{multiply this.product.price this.quantity}}
+        {{this.product.title}} – ${{this.product.price}} – Cantidad: {{this.quantity}}
+
+        <form action="/api/carts/{{../cart._id}}/products/{{this.product._id}}" method="POST" style="display:inline">
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit">Eliminar</button>
+        </form>
       </li>
     {{/each}}
   </ul>
+
+  <p>
+    <strong>
+      Total: $
+      {{multiplyTotal cart.products}}
+    </strong>
+  </p>
+
+  <form action="/api/carts/{{cart._id}}" method="POST" onsubmit="return confirm('¿Vaciar el carrito?')">
+    <input type="hidden" name="_method" value="DELETE" />
+    <button type="submit">Vaciar carrito</button>
+  </form>
 {{else}}
-  <p>El carrito está vacío.</p>
+  <p>No hay productos en tu carrito.</p>
 {{/if}}

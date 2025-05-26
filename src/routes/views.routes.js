@@ -3,12 +3,11 @@ import Product from '../models/Product.js';
 import CartManager from '../managers/CartManagerMongo.js';
 import ProductManager from '../managers/ProductManagerMongo.js';
 
-
 const router = Router();
 const cartManager = new CartManager();
 const productManager = new ProductManager();
 
-// Vista Home con productos desde archivos (opcional)
+// Home (con productos desde archivo JSON si querés usarlo)
 router.get('/', async (req, res) => {
   const products = await productManager.getProducts();
   res.render('home', { products });
@@ -20,7 +19,7 @@ router.get('/realtimeproducts', async (req, res) => {
   res.render('realTimeProducts', { products });
 });
 
-// Vista paginada con productos desde Mongo
+// Vista de productos paginada desde Mongo
 router.get('/products', async (req, res) => {
   try {
     const { limit = 10, page = 1, sort, query } = req.query;
@@ -58,22 +57,7 @@ router.get('/products', async (req, res) => {
   }
 });
 
-// Vista de carrito
-router.get('/carts/:cid', async (req, res) => {
-  try {
-    const cart = await cartManager.getCartById(req.params.cid);
-    if (!cart) return res.status(404).send('Carrito no encontrado');
-
-    const total = cart.products.reduce(
-      (sum, item) => sum + item.product.price * item.quantity,
-      0
-    );
-
-    res.render('cart', { cart, total });
-  } catch (err) {
-    res.status(500).send('Error al cargar el carrito');
-  }
-
+// Vista individual de producto
 router.get('/products/:pid', async (req, res) => {
   const { pid } = req.params;
   const product = await productManager.getProductById(pid);
@@ -81,11 +65,10 @@ router.get('/products/:pid', async (req, res) => {
   res.render('productDetail', { product });
 });
 
-});
+// Vista del carrito (con productos populados)
 router.get('/carts/:cid', async (req, res) => {
   const { cid } = req.params;
-  const cart = await cartManager.getCartById(cid); // Esta función ya usa .populate()
-
+  const cart = await cartManager.getCartById(cid);
   if (!cart) return res.status(404).send('Carrito no encontrado');
 
   res.render('cartDetail', { cart });

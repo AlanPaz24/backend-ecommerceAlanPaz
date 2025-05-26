@@ -4,6 +4,7 @@ import { Server } from 'socket.io';
 import { engine } from 'express-handlebars';
 import Handlebars from 'handlebars';
 import { allowInsecurePrototypeAccess } from '@handlebars/allow-prototype-access';
+import methodOverride from 'method-override';
 
 import __dirname from './utils.js';
 import productsRouter from './routes/products.routes.js';
@@ -12,7 +13,7 @@ import viewsRouter from './routes/views.routes.js';
 import ProductManager from './managers/ProductManagerMongo.js';
 import { connectDB } from './config/db.js';
 
-// ✅ Conectar a MongoDB
+// ✅ Conexión a MongoDB
 connectDB();
 
 // ✅ Inicializar Express
@@ -23,19 +24,20 @@ const PORT = 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(methodOverride('_method'));
 
-// ✅ Configuración de Handlebars con acceso a prototipos
-app.engine(
-  'handlebars',
-  engine({
-    handlebars: allowInsecurePrototypeAccess(Handlebars)
-  })
-);
+// ✅ Handlebars con acceso a prototipos y helpers
+app.engine('handlebars', engine({
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
+  helpers: {
+    multiply: (a, b) => a * b,
+    multiplyTotal: (products) => {
+      return products.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
+    }
+  }
+}));
 app.set('view engine', 'handlebars');
 app.set('views', path.join(__dirname, 'views'));
-
-// ✅ Registrar helper 'multiply'
-Handlebars.registerHelper('multiply', (a, b) => a * b);
 
 // ✅ Rutas
 app.use('/api/products', productsRouter);
