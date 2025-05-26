@@ -23,7 +23,7 @@ router.get('/realtimeproducts', async (req, res) => {
 router.get('/products', async (req, res) => {
   try {
     const { limit = 10, page = 1, sort, query } = req.query;
-    const cartId = '6833adcb8a618a7c862b9d1a'; // Reemplazá por lógica dinámica si querés
+    const cartId = '6833adcb8a618a7c862b9d1a'; // 🟡 Si querés después lo hacemos dinámico
 
     const filter = query
       ? { $or: [{ category: query }, { status: query }] }
